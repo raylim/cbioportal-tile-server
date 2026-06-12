@@ -26,6 +26,8 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from . import cache as tile_cache
 from . import meta
+from .annotations import init_db as init_annotation_db
+from .annotations import router as annotation_router
 from .config import settings
 from .meta import get_patient_hierarchy, get_slide_dbmeta, search_suggestions
 from .slides import SlideCache
@@ -57,6 +59,8 @@ async def lifespan(app: FastAPI):
         settings.max_open_slides,
         settings.aws_endpoint_url or "AWS default",
     )
+    await init_annotation_db()
+    logger.info("Annotation DB ready: %s", settings.annotation_db_path)
     yield
     _slides.close_all()
     await tile_cache.close_cache()
@@ -76,9 +80,11 @@ app = FastAPI(
 app.add_middleware(
     CORSMiddleware,
     allow_origins=settings.cors_origins,
-    allow_methods=["GET"],
+    allow_methods=["GET", "POST", "PUT", "DELETE"],
     allow_headers=["*"],
 )
+
+app.include_router(annotation_router)
 
 TILE_CACHE_HEADERS  = {"Cache-Control": "public, max-age=604800, immutable"}  # 7 days — immutable image data
 THUMB_CACHE_HEADERS = {"Cache-Control": "public, max-age=86400"}

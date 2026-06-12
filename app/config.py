@@ -67,6 +67,22 @@ class Settings:
             os.environ.get("BLOCKCACHE_BLOCK_SIZE", str(8 * 1024 * 1024))  # 8 MB
         )
 
+        # ── Annotation API ───────────────────────────────────────────────────
+        # Path on disk where the SQLite annotation database lives.
+        # Persist this via a named Docker volume.
+        self.annotation_db_path: str = os.environ.get(
+            "ANNOTATION_DB_PATH", "/data/annotations.db"
+        )
+
+        # Keycloak JWKS endpoint used to validate annotation API JWTs.
+        # Example: https://keycloak.mskcc.org/realms/msk/protocol/openid-connect/certs
+        self.keycloak_jwks_url: str = os.environ.get("KEYCLOAK_JWKS_URL", "")
+
+        # Set ANNOTATION_AUTH_ENABLED=false to skip JWT validation in dev/CI.
+        self.annotation_auth_enabled: bool = (
+            os.environ.get("ANNOTATION_AUTH_ENABLED", "true").lower() != "false"
+        )
+
         # CORS — comma-separated list of allowed origins.
         # Default restricts to known public cBioPortal origins; override via env
         # to add internal hostnames (e.g. https://cbioportal.mskcc.org).

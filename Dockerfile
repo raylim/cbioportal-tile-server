@@ -25,6 +25,10 @@ RUN uv sync --frozen --no-dev
 ENV PATH="/app/.venv/bin:$PATH"
 
 RUN useradd --no-create-home --shell /bin/false appuser
+
+# Volume mount point for the SQLite annotation database
+RUN mkdir -p /data && chown appuser:appuser /data
+
 USER appuser
 
 EXPOSE 8080
