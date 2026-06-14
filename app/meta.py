@@ -186,6 +186,8 @@ def get_patient_hierarchy(patient_id: str, warehouse_id: str) -> dict | None:
             "barcode":         r.get("barcode"),
             "block_label":     r.get("BLOCK_LABEL"),
             "block_number":    r.get("BLOCK_NUMBER"),
+            # Part-level anatomical context propagated to slide for frontend display
+            "part_description": r.get("part_description"),
         })
 
     # Clinical sort order for stain groups
