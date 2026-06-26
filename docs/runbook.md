@@ -30,8 +30,14 @@ Browser
      --from-literal=REEF_AWS_KEY=<ecs-access-key> \
      --from-literal=REEF_AWS_SECRET=<ecs-secret-key> \
      --from-literal=DATABRICKS_HOST=https://msk-mode-prod.cloud.databricks.com \
-     --from-literal=DATABRICKS_TOKEN=<pat>
+     --from-literal=DATABRICKS_TOKEN=<pat> \
+     --from-literal=ANNOTATION_DATABASE_URL=postgresql://<user>:<password>@<host>:5432/cbioportal_annotations?sslmode=require
    ```
+
+   The current dev Lakebase endpoint for annotation storage is:
+   - host: `ep-proud-hat-d23z7mxx.database.us-east-1.cloud.databricks.com`
+   - database: `cbioportal_annotations`
+   - login role: `cbioportal_api`
 
 2. **GitHub Actions secret** — for GitOps image-tag pinning:
    - `K8S_DEPLOY_TOKEN`: PAT with `repo` write access to `msk-mind/knowledgesystems-k8s-deployment`
@@ -56,6 +62,12 @@ argocd app get slide-viewer
 Edit `configmap.yaml` and add the MSK internal cBioPortal hostname to `CORS_ORIGINS`:
 ```yaml
 CORS_ORIGINS: "https://cbioportal.org,https://www.cbioportal.org,https://genie.cbioportal.org,https://cbioportal.mskcc.org"
+```
+
+Annotation auth settings also live in the slide-viewer `configmap.yaml`:
+```yaml
+KEYCLOAK_JWKS_URL: "https://keycloak.cbioportal.mskcc.org/auth/realms/msk/protocol/openid-connect/certs"
+ANNOTATION_AUTH_ENABLED: "true"
 ```
 
 ---
@@ -162,6 +174,7 @@ kubectl create secret generic slide-viewer-secrets \
   --from-literal=REEF_AWS_SECRET=<new-secret> \
   --from-literal=DATABRICKS_HOST=https://msk-mode-prod.cloud.databricks.com \
   --from-literal=DATABRICKS_TOKEN=<pat> \
+  --from-literal=ANNOTATION_DATABASE_URL=postgresql://<user>:<password>@<host>:5432/cbioportal_annotations?sslmode=require \
   --dry-run=client -o yaml | kubectl apply -f -
 kubectl rollout restart deployment/slide-viewer
 ```
