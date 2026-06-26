@@ -67,6 +67,12 @@ Pushes to `main` or version tags trigger `.github/workflows/docker-publish.yml`:
 1. Builds and pushes the Docker image to ECR with tags `sha-<7char>`, `latest`, and semver (on tags).
 2. **`update-k8s-manifests` job** — commits the pinned `sha-<7char>` tag into `deployment.yaml` in `knowledgesystems-k8s-deployment`. ArgoCD detects the diff and rolls out automatically.
 
+### Databricks bundle split
+
+- Root `databricks.yml` manages the nightly WSI summary job.
+- `databricks/lakebase/` contains the separate Lakebase bundle for annotation
+  OLTP storage. Keep that provisioning isolated from the batch SQL job bundle.
+
 ---
 
 ## Adding a New Study

@@ -46,3 +46,9 @@ All settings are environment variables (see `app/config.py`):
 ```bash
 uv run pytest
 ```
+
+## Databricks bundles
+
+- Root [databricks.yml](databricks.yml) manages the nightly WSI summary pipeline job.
+- [databricks/lakebase/README.md](databricks/lakebase/README.md) documents the
+  separate Lakebase bundle used to provision annotation storage.
