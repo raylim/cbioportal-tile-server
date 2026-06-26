@@ -34,6 +34,8 @@ All settings are environment variables (see `app/config.py`):
 | `DATABRICKS_HOST` | — | Databricks workspace URL |
 | `DATABRICKS_TOKEN` | — | Databricks PAT |
 | `DATABRICKS_WAREHOUSE_ID` | `0b49b7d78734ad5c` | SQL warehouse |
+| `ANNOTATION_DATABASE_URL` | — | Optional Postgres/Lakebase DSN for annotation storage |
+| `ANNOTATION_DB_PATH` | `/data/annotations.db` | SQLite path used when `ANNOTATION_DATABASE_URL` is unset |
 | `REDIS_URL` | `redis://redis:6379` | Redis connection |
 | `MAX_OPEN_SLIDES` | `256` | LRU slide cache capacity |
 | `BLOCKCACHE_PATH` | — | NVMe block cache directory |

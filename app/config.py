@@ -68,6 +68,10 @@ class Settings:
         )
 
         # ── Annotation API ───────────────────────────────────────────────────
+        # Optional Postgres/Lakebase DSN for annotation storage.
+        # When set, the annotation API uses Postgres instead of local SQLite.
+        self.annotation_database_url: str = os.environ.get("ANNOTATION_DATABASE_URL", "")
+
         # Path on disk where the SQLite annotation database lives.
         # Persist this via a named Docker volume.
         self.annotation_db_path: str = os.environ.get(
@@ -82,6 +86,11 @@ class Settings:
         self.annotation_auth_enabled: bool = (
             os.environ.get("ANNOTATION_AUTH_ENABLED", "true").lower() != "false"
         )
+
+        # OncoKB API token — required for the /api/oncokb/annotate proxy endpoint.
+        # Register at https://www.oncokb.org/account/register to obtain a token.
+        # When empty, the OncoKB endpoint returns 503 (graceful no-op).
+        self.oncokb_api_token: str = os.environ.get("ONCOKB_API_TOKEN", "")
 
         # CORS — comma-separated list of allowed origins.
         # Default restricts to known public cBioPortal origins; override via env

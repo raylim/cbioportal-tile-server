@@ -64,10 +64,16 @@ def main() -> None:
         "APP_MEMORY_LIMIT=4g",
         "CORS_ORIGINS=http://localhost:8080,http://localhost:3000",
         "SERVER_PORT=8080",
+        "ANNOTATION_DB_PATH=/data/annotations.db",
+        "# Optional: point annotations at Lakebase/Postgres instead of local SQLite.",
+        "# ANNOTATION_DATABASE_URL=postgresql://<user>:<password>@<host>:5432/<database>?sslmode=require",
+        "",
+        "# ── OncoKB ────────────────────────────────────────────────────────",
+        "# Register at https://www.oncokb.org/account/settings to obtain a token.",
+        "ONCOKB_API_TOKEN=",
     ]
     print("\n".join(lines))
 
 
 if __name__ == "__main__":
     main()
-
