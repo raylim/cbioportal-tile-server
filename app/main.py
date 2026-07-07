@@ -30,6 +30,7 @@ from .annotations import init_db as init_annotation_db
 from .annotations import router as annotation_router
 from .config import settings
 from .meta import get_patient_hierarchy, get_slide_dbmeta, search_suggestions
+from .oncokb import router as oncokb_router
 from .slides import SlideCache
 from .tiles import get_thumbnail_bytes, get_tile_bytes, max_zoom, slide_metadata
 
@@ -85,6 +86,7 @@ app.add_middleware(
 )
 
 app.include_router(annotation_router)
+app.include_router(oncokb_router)
 
 TILE_CACHE_HEADERS  = {"Cache-Control": "public, max-age=604800, immutable"}  # 7 days — immutable image data
 THUMB_CACHE_HEADERS = {"Cache-Control": "public, max-age=86400"}
